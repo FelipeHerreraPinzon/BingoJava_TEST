@@ -9,7 +9,6 @@ public class BingoTest {
     public static void main(String[] args) {
         int cantidadCartones = solicitarCantidadCartones();
         String[] nombresCartones = new String[cantidadCartones];
-
         int[][] cartones = new int[cantidadCartones][25];
         boolean[] cartonLleno = new boolean[cantidadCartones];
 
@@ -18,6 +17,7 @@ public class BingoTest {
             generarCarton(cartones[i]);
             cartonLleno[i] = false;
         }
+
 
         imprimirCartones(cartones, nombresCartones);
         presionarEnter();
@@ -28,7 +28,7 @@ public class BingoTest {
 
         while (!juegoTerminado) {
             String letra = letras[random.nextInt(5)];
-            int numero = random.nextInt(75) + 1;
+            int numero = generarNumeroPorColumna(letra);
 
             System.out.println("\nNúmero llamado: " + letra + " " + numero + "\n");
 
@@ -57,7 +57,6 @@ public class BingoTest {
                 cantidadCartones = Integer.parseInt(input);
             } catch (NumberFormatException e) {
                 // En caso de que no se ingrese un número válido.
-
             }
         }
         return cantidadCartones;
@@ -75,26 +74,44 @@ public class BingoTest {
                 if (j == 2 && i == 2) {
                     carton[i * 5 + j] = 0; // El espacio central es un espacio libre
                 } else {
-                    carton[i * 5 + j] = random.nextInt(15) + inicio;
+                    carton[i * 5 + j] = generarNumeroPorColumna(getColumnaLetra(j));
                 }
             }
             inicio += 15;
         }
     }
 
+    private static int generarNumeroPorColumna(String letra) {
+        Random random = new Random();
+        switch (letra) {
+            case "B":
+                return random.nextInt(15) + 1;
+            case "I":
+                return random.nextInt(15) + 16;
+            case "N":
+                return random.nextInt(15) + 31;
+            case "G":
+                return random.nextInt(15) + 46;
+            case "O":
+                return random.nextInt(15) + 61;
+            default:
+                return 0; // En caso de letra desconocida
+        }
+    }
+
     private static void imprimirCartones(int[][] cartones, String[] nombresCartones) {
         for (int i = 0; i < cartones.length; i++) {
-            System.out.println(nombresCartones[i] + ":");
+            System.out.println("\u001B[34m" + nombresCartones[i] + ": " + "\u001B[0m"); // Texto azul para los nombres
             imprimirCarton(cartones[i]);
         }
     }
 
     private static void imprimirCarton(int[] carton) {
-        String[] columnas = {"B", "I", "N", "G", "O"};
+        String[] columnas = {"\u001B[31mB", "\u001B[31mI", "\u001B[31mN", "\u001B[31mG", "\u001B[31mO"}; // Texto rojo para las letras BINGO
         int currentIndex = 0;
 
         for (int i = 0; i < columnas.length; i++) {
-            System.out.print(columnas[i] + "\t");
+            System.out.print(columnas[i] + "\t" + "\u001B[0m"); // Restablecer color
         }
         System.out.println();
 
@@ -114,7 +131,7 @@ public class BingoTest {
     }
 
     private static void imprimirCartonConX(int[] carton, String nombreCarton) {
-        System.out.println(nombreCarton + ":");
+        System.out.println("\u001B[34m" + nombreCarton + ":" + "\u001B[0m"); // Texto azul
         imprimirCarton(carton);
     }
 
@@ -149,7 +166,8 @@ public class BingoTest {
     }
 
     private static void presionarEnter() {
-        System.out.println("Presiona Enter para continuar...");
+        System.out.println("\u001B[33mPresiona Enter para continuar...\u001B[0m"); // Texto amarillo
         new java.util.Scanner(System.in).nextLine();
     }
 }
+
