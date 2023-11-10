@@ -2,11 +2,13 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 public class BingoTest {
-    public static final String ANSI_GREEN = "\u001B[32m";
+
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
 
     public static void main(String[] args) {
+
+
         int cantidadCartones = solicitarCantidadCartones();
         String[] nombresCartones = new String[cantidadCartones];
         int[][] cartones = new int[cantidadCartones][25];
@@ -37,8 +39,11 @@ public class BingoTest {
                     cartonLleno[i] = verificarBingo(cartones[i]);
                     imprimirCartonConX(cartones[i], nombresCartones[i]);
                     if (cartonLleno[i]) {
-                        JOptionPane.showMessageDialog(null, "¡BINGO en el " + nombresCartones[i] + "!");
+                        JOptionPane.showMessageDialog(null, nombresCartones[i] + " hizo BINGO!!!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, nombresCartones[i] + " coincidió con "+ letra + " " + numero);
                     }
+
                 }
             }
 
