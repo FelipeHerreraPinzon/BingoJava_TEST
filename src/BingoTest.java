@@ -1,10 +1,12 @@
 import java.util.Random;
 import javax.swing.JOptionPane;
+import java.util.Scanner;
 
 public class BingoTest {
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         int cantidadCartones = solicitarCantidadCartones();
@@ -185,18 +187,18 @@ public class BingoTest {
 
     private static void presionarEnter() {
         System.out.print("\u001B[33mPresiona Enter para sortear...\u001B[0m"); // Texto amarillo
-        new java.util.Scanner(System.in).nextLine();
+        scanner.nextLine();
     }
 
     private static void iniciarJuego() {
         System.out.print("\u001B[33mCartones Asignados !!!, pulsa ENTER para empezar\u001B[0m"); // Texto amarillo
-        new java.util.Scanner(System.in).nextLine();
+        scanner.nextLine();
     }
 
     private static void asignarCartones(){
 
         System.out.print("\u001B[33mAhora vamos a asignar los cartones, PRESIONA ENTER...\u001B[0m"); // Texto amarillo
-        new java.util.Scanner(System.in).nextLine();
+        scanner.nextLine();
     }
 }
 
