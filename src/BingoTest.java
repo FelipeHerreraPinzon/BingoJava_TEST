@@ -3,6 +3,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import java.util.Scanner;
 
+
 // Definición de la clase principal
 public class BingoTest {
 
@@ -96,21 +97,37 @@ public class BingoTest {
         return JOptionPane.showInputDialog("Nombre para el cartón " + numeroCarton + " (máximo 15 caracteres):");
     }
 
-    // Método para generar los números de un cartón
     private static void generarCarton(int[] carton) {
         Random random = new Random();
-        int inicio = 1;
+
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 if (j == 2 && i == 2) {
                     carton[i * 5 + j] = 0; // El espacio central es un espacio libre
                 } else {
-                    carton[i * 5 + j] = generarNumeroPorColumna(getColumnaLetra(j));
+                    int nuevoNumero;
+                    boolean numeroRepetido;
+
+                    do {
+                        numeroRepetido = false;
+                        nuevoNumero = generarNumeroPorColumna(getColumnaLetra(j));
+
+                        // Verificar si el nuevo número ya existe en la columna actual
+                        for (int k = 0; k < i; k++) {
+                            if (carton[k * 5 + j] == nuevoNumero) {
+                                numeroRepetido = true;
+                                break;
+                            }
+                        }
+                    } while (numeroRepetido);
+
+                    carton[i * 5 + j] = nuevoNumero;
                 }
             }
-            inicio += 15;
         }
     }
+
+
 
     // Método para generar un número según la columna (letra) del cartón
     private static int generarNumeroPorColumna(String letra) {
