@@ -7,23 +7,26 @@ public class BingoTest {
     public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
 
     public static void main(String[] args) {
-
-
         int cantidadCartones = solicitarCantidadCartones();
         String[] nombresCartones = new String[cantidadCartones];
         int[][] cartones = new int[cantidadCartones][25];
         boolean[] cartonLleno = new boolean[cantidadCartones];
 
+        // Imprimir cartones numerados
         for (int i = 0; i < cantidadCartones; i++) {
-            nombresCartones[i] = solicitarNombreCarton(i + 1);
+            nombresCartones[i] = "Cartón " + (i + 1); // Asignar nombres temporales
             generarCarton(cartones[i]);
             cartonLleno[i] = false;
         }
-
-
         imprimirCartones(cartones, nombresCartones);
         presionarEnter();
 
+        // Preguntar por nombres de cartones
+        for (int i = 0; i < cantidadCartones; i++) {
+            nombresCartones[i] = solicitarNombreCarton(i + 1);
+        }
+
+        // Iniciar juego
         Random random = new Random();
         String[] letras = {"B", "I", "N", "G", "O"};
         boolean juegoTerminado = false;
@@ -41,7 +44,7 @@ public class BingoTest {
                     if (cartonLleno[i]) {
                         JOptionPane.showMessageDialog(null, nombresCartones[i] + " hizo BINGO!!!");
                     } else {
-                        JOptionPane.showMessageDialog(null, nombresCartones[i] + " coincidió con "+ letra + " " + numero);
+                        JOptionPane.showMessageDialog(null, nombresCartones[i] + " coincidió con " + letra + " " + numero);
                     }
 
                 }
@@ -106,7 +109,7 @@ public class BingoTest {
 
     private static void imprimirCartones(int[][] cartones, String[] nombresCartones) {
         for (int i = 0; i < cartones.length; i++) {
-            System.out.println("\u001B[34m" + nombresCartones[i] + ": " + "\u001B[0m"); // Texto azul para los nombres
+            System.out.println("\u001B[34m" + nombresCartones[i] + ":" + "\u001B[0m"); // Texto azul para los nombres
             imprimirCarton(cartones[i]);
         }
     }
@@ -175,4 +178,3 @@ public class BingoTest {
         new java.util.Scanner(System.in).nextLine();
     }
 }
-
