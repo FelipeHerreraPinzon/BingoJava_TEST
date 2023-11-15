@@ -19,12 +19,22 @@ public class BingoTest {
             cartonLleno[i] = false;
         }
         imprimirCartones(cartones, nombresCartones);
-        presionarEnter();
 
+        asignarCartones();
         // Preguntar por nombres de cartones
         for (int i = 0; i < cantidadCartones; i++) {
             nombresCartones[i] = solicitarNombreCarton(i + 1);
         }
+
+        // Imprimir cartones numerados y con nombres asignados
+        for (int i = 0; i < cantidadCartones; i++) {
+            nombresCartones[i] = "Cartón " + (i + 1) + " - " + nombresCartones[i]; // Asignar nombres completos
+            generarCarton(cartones[i]);
+            cartonLleno[i] = false;
+        }
+
+        imprimirCartones(cartones, nombresCartones);
+         iniciarJuego();
 
         // Iniciar juego
         Random random = new Random();
@@ -174,7 +184,20 @@ public class BingoTest {
     }
 
     private static void presionarEnter() {
-        System.out.println("\u001B[33mPresiona Enter para continuar...\u001B[0m"); // Texto amarillo
+        System.out.print("\u001B[33mPresiona Enter para sortear...\u001B[0m"); // Texto amarillo
+        new java.util.Scanner(System.in).nextLine();
+    }
+
+    private static void iniciarJuego() {
+        System.out.print("\u001B[33mCartones Asignados !!!, pulsa ENTER para empezar\u001B[0m"); // Texto amarillo
+        new java.util.Scanner(System.in).nextLine();
+    }
+
+    private static void asignarCartones(){
+
+        System.out.print("\u001B[33mAhora vamos a asignar los cartones, PRESIONA ENTER...\u001B[0m"); // Texto amarillo
         new java.util.Scanner(System.in).nextLine();
     }
 }
+
+
