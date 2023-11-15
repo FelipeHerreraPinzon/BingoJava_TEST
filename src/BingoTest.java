@@ -1,44 +1,53 @@
+// Importación de librerías necesarias
 import java.util.Random;
 import javax.swing.JOptionPane;
 import java.util.Scanner;
 
+// Definición de la clase principal
 public class BingoTest {
 
+    // Constantes para el formato del texto
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+
+    // Scanner global para la entrada de datos
     private static final Scanner scanner = new Scanner(System.in);
 
+    // Método principal
     public static void main(String[] args) {
+
+        // Declaración de variables
         int cantidadCartones = solicitarCantidadCartones();
         String[] nombresCartones = new String[cantidadCartones];
         int[][] cartones = new int[cantidadCartones][25];
         boolean[] cartonLleno = new boolean[cantidadCartones];
 
-        // Imprimir cartones numerados
+        // Generación e impresión de los cartones numerados
         for (int i = 0; i < cantidadCartones; i++) {
-            nombresCartones[i] = "Cartón " + (i + 1); // Asignar nombres temporales
+            nombresCartones[i] = "Cartón " + (i + 1);
             generarCarton(cartones[i]);
             cartonLleno[i] = false;
         }
         imprimirCartones(cartones, nombresCartones);
 
+        // Mensaje y asignación de nombres a los cartones
         asignarCartones();
-        // Preguntar por nombres de cartones
         for (int i = 0; i < cantidadCartones; i++) {
             nombresCartones[i] = solicitarNombreCarton(i + 1);
         }
 
-        // Imprimir cartones numerados y con nombres asignados
+        // Generación e impresión de cartones con nombres asignados
         for (int i = 0; i < cantidadCartones; i++) {
-            nombresCartones[i] = "Cartón " + (i + 1) + " - " + nombresCartones[i]; // Asignar nombres completos
+            nombresCartones[i] = "Cartón " + (i + 1) + " - " + nombresCartones[i];
             generarCarton(cartones[i]);
             cartonLleno[i] = false;
         }
-
         imprimirCartones(cartones, nombresCartones);
-         iniciarJuego();
 
-        // Iniciar juego
+        // Mensaje de inicio del juego
+        iniciarJuego();
+
+        // Inicio del juego
         Random random = new Random();
         String[] letras = {"B", "I", "N", "G", "O"};
         boolean juegoTerminado = false;
@@ -58,7 +67,6 @@ public class BingoTest {
                     } else {
                         JOptionPane.showMessageDialog(null, nombresCartones[i] + " coincidió con " + letra + " " + numero);
                     }
-
                 }
             }
 
@@ -69,6 +77,7 @@ public class BingoTest {
         }
     }
 
+    // Método para solicitar la cantidad de cartones
     private static int solicitarCantidadCartones() {
         int cantidadCartones = 0;
         while (cantidadCartones < 1 || cantidadCartones > 12) {
@@ -82,10 +91,12 @@ public class BingoTest {
         return cantidadCartones;
     }
 
+    // Método para solicitar el nombre de un cartón
     private static String solicitarNombreCarton(int numeroCarton) {
         return JOptionPane.showInputDialog("Nombre para el cartón " + numeroCarton + " (máximo 15 caracteres):");
     }
 
+    // Método para generar los números de un cartón
     private static void generarCarton(int[] carton) {
         Random random = new Random();
         int inicio = 1;
@@ -101,6 +112,7 @@ public class BingoTest {
         }
     }
 
+    // Método para generar un número según la columna (letra) del cartón
     private static int generarNumeroPorColumna(String letra) {
         Random random = new Random();
         switch (letra) {
@@ -119,6 +131,7 @@ public class BingoTest {
         }
     }
 
+    // Método para imprimir los cartones
     private static void imprimirCartones(int[][] cartones, String[] nombresCartones) {
         for (int i = 0; i < cartones.length; i++) {
             System.out.println("\u001B[34m" + nombresCartones[i] + ":" + "\u001B[0m"); // Texto azul para los nombres
@@ -126,6 +139,7 @@ public class BingoTest {
         }
     }
 
+    // Método para imprimir un cartón
     private static void imprimirCarton(int[] carton) {
         String[] columnas = {"\u001B[31mB", "\u001B[31mI", "\u001B[31mN", "\u001B[31mG", "\u001B[31mO"}; // Texto rojo para las letras BINGO
         int currentIndex = 0;
@@ -150,11 +164,13 @@ public class BingoTest {
         System.out.println();
     }
 
+    // Método para imprimir un cartón con X
     private static void imprimirCartonConX(int[] carton, String nombreCarton) {
         System.out.println("\u001B[34m" + nombreCarton + ":" + "\u001B[0m"); // Texto azul
         imprimirCarton(carton);
     }
 
+    // Método para marcar un número en el cartón
     private static boolean marcarCarton(int[] carton, String letra, int numero) {
         for (int i = 0; i < 25; i++) {
             if (carton[i] == numero && letra.equals(getColumnaLetra(i))) {
@@ -165,17 +181,20 @@ public class BingoTest {
         return false;
     }
 
+    // Método para obtener la letra de una columna en el cartón
     private static String getColumnaLetra(int index) {
         String[] columnas = {"B", "I", "N", "G", "O"};
         return columnas[index % 5];
     }
 
+    // Método para verificar si hay un BINGO en el cartón
     private static boolean verificarBingo(int[] carton) {
         // Implementa la lógica para verificar un BINGO en filas, columnas y diagonales
         // Retorna true si se encuentra un BINGO, de lo contrario, retorna false.
         return false;
     }
 
+    // Método para verificar si el juego ha terminado
     private static boolean verificarJuegoTerminado(boolean[] cartonesLlenos) {
         for (boolean cartonLleno : cartonesLlenos) {
             if (!cartonLleno) {
@@ -185,21 +204,21 @@ public class BingoTest {
         return true;
     }
 
+    // Método para esperar la presión de Enter
     private static void presionarEnter() {
         System.out.print("\u001B[33mPresiona Enter para sortear...\u001B[0m"); // Texto amarillo
         scanner.nextLine();
     }
 
+    // Método para mostrar mensaje de inicio de juego
     private static void iniciarJuego() {
         System.out.print("\u001B[33mCartones Asignados !!!, pulsa ENTER para empezar\u001B[0m"); // Texto amarillo
         scanner.nextLine();
     }
 
-    private static void asignarCartones(){
-
+    // Método para mostrar mensaje de asignación de cartones
+    private static void asignarCartones() {
         System.out.print("\u001B[33mAhora vamos a asignar los cartones, PRESIONA ENTER...\u001B[0m"); // Texto amarillo
         scanner.nextLine();
     }
 }
-
-
