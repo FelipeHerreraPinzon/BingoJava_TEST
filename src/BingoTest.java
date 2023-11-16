@@ -13,9 +13,7 @@ public class BingoTest {
     // Scanner global para la entrada de datos
     private static final Scanner scanner = new Scanner(System.in);
 
-
-
-    // Lista para almacenar el historial de letras y números llamados
+    // matriz 2D para almacenar el historial de letras y números llamados
     private static String[][] historial;
     // Índice para seguir un registro del historial
     private static int indiceHistorial;
@@ -26,8 +24,8 @@ public class BingoTest {
         // Declaración de variables
         int cantidadCartones = solicitarCantidadCartones();
         String[] nombresCartones = new String[cantidadCartones];
-        int[][] cartones = new int[cantidadCartones][25];
-        boolean[] cartonLleno = new boolean[cantidadCartones];
+        int[][] cartones = new int[cantidadCartones][25]; // representa TODOS los cartones de BINGO (parte numerica)
+        boolean[] cartonLleno = new boolean[cantidadCartones]; // representa el estado de los cartones TRUE para lleno y FALSE para no lleno
 
         // Inicialización del historial
         historial = new String[5 * 15][2];
@@ -35,7 +33,7 @@ public class BingoTest {
 
         // Generación e impresión de los cartones numerados
         for (int i = 0; i < cantidadCartones; i++) {
-            nombresCartones[i] = "Cartón " + (i + 1);
+            nombresCartones[i] = "Cartón " + (i + 1);  // este arreglo almacena como nombres de cartones los numeros del 1 a cantidadCartones
             generarCarton(cartones[i]);
             cartonLleno[i] = false;
         }
@@ -130,16 +128,18 @@ public class BingoTest {
     }
 
     private static void generarCarton(int[] carton) {
-        Random random = new Random();
+        Random random = new Random(); // Crear una instancia de la clase Random para generar números aleatorios
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < 5; i++) { // Iterar sobre las filas del cartón
+            for (int j = 0; j < 5; j++) { // Iterar sobre las columnas del cartón
                 if (j == 2 && i == 2) {
-                    carton[i * 5 + j] = 0; // El espacio central es un espacio libre
+                    // Si estamos en la posición central (fila 2, columna 2), asignar 0 (espacio libre)
+                    carton[i * 5 + j] = 0;
                 } else {
                     int nuevoNumero;
                     boolean numeroRepetido;
 
+                    // Generar un nuevo número para la columna actual sin repetirlo en la misma columna
                     do {
                         numeroRepetido = false;
                         nuevoNumero = generarNumeroPorColumna(getColumnaLetra(j));
@@ -153,11 +153,13 @@ public class BingoTest {
                         }
                     } while (numeroRepetido);
 
+                    // Asignar el nuevo número al cartón
                     carton[i * 5 + j] = nuevoNumero;
                 }
             }
         }
     }
+
 
     // Método para generar un número según la columna (letra) del cartón
     private static int generarNumeroPorColumna(String letra) {
