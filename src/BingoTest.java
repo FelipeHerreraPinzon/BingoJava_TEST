@@ -1,8 +1,8 @@
 // Importación de librerías necesarias
+
 import java.util.Random;
 import javax.swing.JOptionPane;
 import java.util.Scanner;
-
 
 // Definición de la clase principal
 public class BingoTest {
@@ -14,6 +14,13 @@ public class BingoTest {
     // Scanner global para la entrada de datos
     private static final Scanner scanner = new Scanner(System.in);
 
+
+
+    // Lista para almacenar el historial de letras y números llamados
+    private static String[][] historial;
+    // Índice para seguir un registro del historial
+    private static int indiceHistorial;
+
     // Método principal
     public static void main(String[] args) {
 
@@ -22,6 +29,10 @@ public class BingoTest {
         String[] nombresCartones = new String[cantidadCartones];
         int[][] cartones = new int[cantidadCartones][25];
         boolean[] cartonLleno = new boolean[cantidadCartones];
+
+        // Inicialización del historial
+        historial = new String[5 * 15][2];
+        indiceHistorial = 0;
 
         // Generación e impresión de los cartones numerados
         for (int i = 0; i < cantidadCartones; i++) {
@@ -57,6 +68,15 @@ public class BingoTest {
             String letra = letras[random.nextInt(5)];
             int numero = generarNumeroPorColumna(letra);
 
+            // Verificar si la combinación ya ha sido seleccionada
+            while (combinacionRepetida(letra, numero)) {
+                letra = letras[random.nextInt(5)];
+                numero = generarNumeroPorColumna(letra);
+            }
+
+            // Agregar la combinación al historial
+            agregarAlHistorial(letra, numero);
+
             System.out.println("\nNúmero llamado: " + letra + " " + numero + "\n");
 
             for (int i = 0; i < cantidadCartones; i++) {
@@ -76,6 +96,16 @@ public class BingoTest {
                 presionarEnter();
             }
         }
+    }
+
+    // Método para verificar si la combinación ya ha sido seleccionada
+    private static boolean combinacionRepetida(String letra, int numero) {
+        for (int i = 0; i < indiceHistorial; i++) {
+            if (letra.equals(historial[i][0]) && numero == Integer.parseInt(historial[i][1])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Método para solicitar la cantidad de cartones
@@ -126,8 +156,6 @@ public class BingoTest {
             }
         }
     }
-
-
 
     // Método para generar un número según la columna (letra) del cartón
     private static int generarNumeroPorColumna(String letra) {
@@ -231,11 +259,19 @@ public class BingoTest {
     private static void iniciarJuego() {
         System.out.print("\u001B[33mCartones Asignados !!!, pulsa ENTER para empezar\u001B[0m"); // Texto amarillo
         scanner.nextLine();
+        scanner.nextLine();
     }
 
     // Método para mostrar mensaje de asignación de cartones
     private static void asignarCartones() {
         System.out.print("\u001B[33mAhora vamos a asignar los cartones, PRESIONA ENTER...\u001B[0m"); // Texto amarillo
         scanner.nextLine();
+    }
+
+    // Método para agregar la combinación al historial
+    private static void agregarAlHistorial(String letra, int numero) {
+        historial[indiceHistorial][0] = letra;
+        historial[indiceHistorial][1] = Integer.toString(numero);
+        indiceHistorial++;
     }
 }
