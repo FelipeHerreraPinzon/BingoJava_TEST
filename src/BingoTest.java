@@ -1,5 +1,4 @@
 // Importación de librerías necesarias
-
 import java.util.Random;
 import javax.swing.JOptionPane;
 import java.util.Scanner;
@@ -237,10 +236,27 @@ public class BingoTest {
 
     // Método para verificar si hay un BINGO en el cartón
     private static boolean verificarBingo(int[] carton) {
-        // Implementa la lógica para verificar un BINGO en filas, columnas y diagonales
-        // Retorna true si se encuentra un BINGO, de lo contrario, retorna false.
+        // Verificar filas
+        for (int i = 0; i < 5; i++) {
+            boolean filaCompleta = true;
+            for (int j = 0; j < 5; j++) {
+                if (carton[i * 5 + j] != 0) {
+                    filaCompleta = false;
+                    break;
+                }
+            }
+            if (filaCompleta) {
+                return true;
+            }
+        }
+
+        // Implementa la lógica para verificar un BINGO en columnas y diagonales aquí
+        // ...
+
         return false;
     }
+
+
 
     // Método para verificar si el juego ha terminado
     private static boolean verificarJuegoTerminado(boolean[] cartonesLlenos) {
