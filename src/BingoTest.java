@@ -77,6 +77,9 @@ public class BingoTest {
             // Agregar la combinación al historial
             agregarAlHistorial(letra, numero);
 
+            // Imprimir el historial después de cada llamado
+            imprimirHistorial();
+
             System.out.println("\nNúmero llamado: " + letra + " " + numero + "\n");
 
             for (int i = 0; i < cantidadCartones; i++) {
@@ -274,4 +277,64 @@ public class BingoTest {
         historial[indiceHistorial][1] = Integer.toString(numero);
         indiceHistorial++;
     }
+    // Método para imprimir el historial de números y letras
+
+    // Método para imprimir el historial de números y letras
+    private static void imprimirHistorial() {
+        System.out.println("Historial de números y letras llamados:");
+        System.out.println("-------------------------------------");
+
+        // Obtener la lista única de letras en el historial
+        String[] letrasUnicas = obtenerLetrasUnicas();
+
+        // Imprimir el historial agrupado por letra
+        for (String letra : letrasUnicas) {
+            System.out.print(letra + "   ");
+            imprimirNumerosPorLetra(letra);
+            System.out.println();
+        }
+
+        System.out.println("-------------------------------------\n");
+    }
+
+    // Método para obtener la lista única de letras en el historial
+    private static String[] obtenerLetrasUnicas() {
+        String[] letrasUnicas = new String[indiceHistorial];
+        int count = 0;
+
+        for (int i = 0; i < indiceHistorial; i++) {
+            String letra = historial[i][0];
+            if (!contiene(letrasUnicas, letra, count)) {
+                letrasUnicas[count++] = letra;
+            }
+        }
+
+        // Ajustar el tamaño del arreglo resultante
+        String[] resultado = new String[count];
+        System.arraycopy(letrasUnicas, 0, resultado, 0, count);
+
+        return resultado;
+    }
+
+    // Método para verificar si un arreglo contiene un elemento específico
+    private static boolean contiene(String[] arreglo, String elemento, int count) {
+        for (int i = 0; i < count; i++) {
+            if (arreglo[i].equals(elemento)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Método para imprimir los números asociados a una letra en el historial
+    private static void imprimirNumerosPorLetra(String letra) {
+        for (int i = 0; i < indiceHistorial; i++) {
+            if (historial[i][0].equals(letra)) {
+                System.out.print(historial[i][1] + " ");
+            }
+        }
+    }
+
+
+
 }
