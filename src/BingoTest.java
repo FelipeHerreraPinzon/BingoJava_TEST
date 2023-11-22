@@ -1,4 +1,5 @@
 // Importación de librerías necesarias
+import java.util.Arrays;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import java.util.Scanner;
@@ -18,11 +19,14 @@ public class BingoTest {
     // Índice para seguir un registro del historial
     private static int indiceHistorial;
 
+    private static int cantidad;
+
     // Método principal
     public static void main(String[] args) {
 
         // Declaración de variables
         int cantidadCartones = solicitarCantidadCartones();
+        cantidad = cantidadCartones;
         String[] nombresCartones = new String[cantidadCartones];
         int[][] cartones = new int[cantidadCartones][25]; // representa TODOS los cartones de BINGO (parte numerica)
         boolean[] cartonLleno = new boolean[cantidadCartones]; // representa el estado de los cartones TRUE para lleno y FALSE para no lleno
@@ -37,7 +41,8 @@ public class BingoTest {
             generarCarton(cartones[i]);
             cartonLleno[i] = false;
         }
-        imprimirCartones(cartones, nombresCartones);
+        //imprimirCartones(cartones, nombresCartones);
+        imprimirNumerosCartones(cartones, nombresCartones);
 
         // Mensaje y asignación de nombres a los cartones
         asignarCartones();
@@ -51,7 +56,8 @@ public class BingoTest {
             generarCarton(cartones[i]);
             cartonLleno[i] = false;
         }
-        imprimirCartones(cartones, nombresCartones);
+        //imprimirCartones(cartones, nombresCartones);
+        imprimirNumerosCartones(cartones, nombresCartones);
 
         // Mensaje de inicio del juego
         iniciarJuego();
@@ -82,7 +88,7 @@ public class BingoTest {
             for (int i = 0; i < cantidadCartones; i++) {
                 if (!cartonLleno[i] && marcarCarton(cartones[i], letra, numero)) {
                     cartonLleno[i] = verificarBingo(cartones[i]);
-                    imprimirCartonConX(cartones[i], nombresCartones[i]);
+                    //imprimirCartonConX(cartones[i], nombresCartones[i]);
                     if (cartonLleno[i]) {
                         JOptionPane.showMessageDialog(null, nombresCartones[i] + " hizo BINGO!!!");
                     } else {
@@ -90,6 +96,7 @@ public class BingoTest {
                     }
                 }
             }
+            imprimirNumerosCartones(cartones, nombresCartones);
 
             juegoTerminado = verificarJuegoTerminado(cartonLleno);
             if (!juegoTerminado) {
@@ -181,12 +188,11 @@ public class BingoTest {
     }
 
     // Método para imprimir los cartones
-    private static void imprimirCartones(int[][] cartones, String[] nombresCartones) {
-        for (int i = 0; i < cartones.length; i++) {
-            System.out.println("\u001B[34m" + nombresCartones[i] + ":" + "\u001B[0m"); // Texto azul para los nombres
-            imprimirCarton(cartones[i]);
-        }
-    }
+    /**private static void imprimirCartones(int[][] cartones, String[] nombresCartones) {
+
+     imprimirNumerosCartones(cartones, nombresCartones);
+
+     }*/
 
     // Método para imprimir un cartón
     private static void imprimirCarton(int[] carton) {
@@ -211,6 +217,96 @@ public class BingoTest {
             System.out.println();
         }
         System.out.println();
+    }
+
+    private static void imprimirNumerosCartones(int[][] cartones, String [] nombresCartones) {
+
+        String[] columnas = {"\u001B[31mB", "\u001B[31mI", "\u001B[31mN", "\u001B[31mG", "\u001B[31mO"}; // Texto rojo para las letras BINGO
+        int currentIndex = 0;
+
+        System.out.println();
+
+        int p1 = cantidad / 4;
+        int p2 = cantidad - p1 * 4;
+
+        for (int x = 0; x < p1; x++) {
+            currentIndex = 0;
+
+            for (int i = 0; i < 4; i++) {
+
+                String n = String.format("%-27s", (nombresCartones[i+x*4] + ":"));
+                System.out.print("\u001B[34m" + n + "\u001B[0m" + "\t");
+            }
+            System.out.println();
+
+
+            for (int c = 0; c < 4; c++) {
+                for (int i = 0; i < columnas.length; i++) {
+                    System.out.print(columnas[i] + "\t" + "\u001B[0m");
+                }
+                System.out.print("\t\t");
+            }
+
+            System.out.println();
+
+            for (int i = 0; i < 5; i++) {
+                //System.out.println(i);
+                for (int c = 0; c < 4; c++) {
+                    for (int j = 0; j < columnas.length; j++) {
+                        int numero = cartones[c][currentIndex+j];
+                        if (numero == 0) {
+                            System.out.print(ANSI_GREEN_BACKGROUND + "X" + ANSI_RESET + "\t"); // Fondo verde
+                        } else {
+                            System.out.print(numero + "\t");
+                        }
+                    }
+
+                    System.out.print("\t\t");
+                }
+                currentIndex+=5;
+                System.out.println();
+            }
+            System.out.println();
+            System.out.println();
+        }
+
+
+        currentIndex = 0;
+
+        if (p2 != 0) {
+            for (int i = 0; i < p2; i++) {
+                String n = String.format("%-27s", (nombresCartones[i+p1*4] + ":"));
+                System.out.print("\u001B[34m" + n + "\u001B[0m" + "\t\t\t\t");
+            }
+            System.out.println();
+
+            for (int c = 0; c < p2; c++) {
+                for (int i = 0; i < columnas.length; i++) {
+                    System.out.print(columnas[i] + "\t" + "\u001B[0m");
+                }
+                System.out.print("\t\t");
+            }
+
+            System.out.println();
+
+            for (int i = 0; i < 5; i++) {
+                for (int c = 0; c < p2; c++) {
+                    for (int j = 0; j < columnas.length; j++) {
+                        int numero = cartones[c+p1*4][currentIndex+j];
+                        if (numero == 0) {
+                            System.out.print(ANSI_GREEN_BACKGROUND + "X" + ANSI_RESET + "\t"); // Fondo verde
+                        } else {
+                            System.out.print(numero + "\t");
+                        }
+                    }
+
+                    System.out.print("\t\t");
+                }
+                currentIndex+=5;
+                System.out.println();
+            }
+            System.out.println();
+        }
     }
 
     // Método para imprimir un cartón con X
@@ -257,7 +353,6 @@ public class BingoTest {
 
         return false;
     }
-
 
 
     // Método para verificar si el juego ha terminado
@@ -352,7 +447,4 @@ public class BingoTest {
             }
         }
     }
-
-
-
 }
